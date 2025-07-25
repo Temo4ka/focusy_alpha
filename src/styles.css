@@ -1,0 +1,462 @@
+/* Основные переменные и сброс стилей */
+:root {
+  --color-bg: #ffffe7;
+  --color-primary: #11317c;
+  --color-secondary: rgba(33, 53, 124, 1);
+  --color-accent: rgba(192, 177, 242, 1);
+  --color-text-light: rgba(255, 255, 231, 1);
+  --color-text-dark: #11317c;
+  --color-progress-bg: linear-gradient(90deg, rgba(255,255,207,1) 0%, rgba(255,255,255,1) 100%);
+  --color-progress-fill: linear-gradient(90deg, rgba(90,68,168,1) 0%, rgba(152,130,226,1) 100%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Unbounded', sans-serif;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  color: var(--color-text-dark);
+}
+
+/* Основные классы */
+.app-container {
+  background-color: var(--color-bg);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  width: 870px;
+  min-height: 1890px;
+  position: relative;
+  background-color: var(--color-bg);
+}
+
+/* Хедер */
+.header {
+  position: absolute;
+  width: 800px;
+  height: 173px;
+  top: 340px;
+  left: 35px;
+}
+
+.header-content {
+  position: relative;
+  height: 100%;
+}
+
+.logo-container {
+  position: absolute;
+  width: 562px;
+  height: 173px;
+  top: 0;
+  left: 0;
+}
+
+.logo-title {
+  position: absolute;
+  width: 557px;
+  top: 126px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  white-space: nowrap;
+}
+
+.logo-img {
+  position: absolute;
+  width: 117px;
+  height: 117px;
+  top: 0;
+  left: 0;
+}
+
+.profile-btn {
+  position: absolute;
+  width: 276px;
+  height: 68px;
+  top: 23px;
+  left: 524px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  position: relative;
+  border-radius: 25px;
+}
+
+.btn-icon {
+  width: 43px;
+}
+
+.btn-text {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 36px;
+  white-space: nowrap;
+}
+
+.points-container {
+  position: absolute;
+  width: 246px;
+  height: 59px;
+  top: 114px;
+  left: 554px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.points-display {
+  width: 187px;
+  height: 59px;
+  display: flex;
+  align-items: center;
+  padding: 11px 13px;
+  background-color: var(--color-primary);
+  border-radius: 30px;
+}
+
+.points-icon {
+  width: 52px;
+  height: 36px;
+  object-fit: cover;
+}
+
+.points-value {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  color: var(--color-text-light);
+  margin-left: auto;
+}
+
+.add-points-btn {
+  width: 55px;
+  height: 59px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px;
+  background-color: var(--color-primary);
+  border-radius: 30px;
+  cursor: pointer;
+  border: none;
+}
+
+.add-points-text {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 48px;
+  color: var(--color-text-light);
+}
+
+/* Секция задач */
+.tasks-section {
+  position: absolute;
+  width: 808px;
+  height: 251px;
+  top: 533px;
+  left: 35px;
+}
+
+.tasks-container {
+  position: relative;
+  width: 800px;
+  height: 251px;
+  background-color: var(--color-secondary);
+  border-radius: 40px;
+}
+
+.tasks-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 53px 155px 51px;
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  width: 512px;
+  height: 95px;
+  border-radius: 40px;
+  background: linear-gradient(0deg, rgba(152,130,226,1) 0%, rgba(95,65,196,1) 100%);
+}
+
+.tasks-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 35px;
+  line-height: 42px;
+  color: var(--color-text-light);
+  white-space: nowrap;
+}
+
+.progress-container {
+  position: absolute;
+  width: 511px;
+  height: 78px;
+  top: 131px;
+  left: 32px;
+}
+
+.progress-label {
+  position: absolute;
+  width: 409px;
+  top: 0;
+  left: 17px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-text-light);
+}
+
+.progress-bg {
+  position: absolute;
+  width: 511px;
+  height: 46px;
+  top: 32px;
+  left: 0;
+  border-radius: 30px;
+  background: var(--color-progress-bg);
+}
+
+.progress-fill {
+  position: absolute;
+  width: 393px;
+  height: 46px;
+  top: 32px;
+  left: 0;
+  border-radius: 30px;
+  background: var(--color-progress-fill);
+}
+
+.progress-value {
+  position: absolute;
+  width: 224px;
+  top: 37px;
+  left: 17px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 36px;
+  color: var(--color-text-light);
+  white-space: nowrap;
+}
+
+.xp-circle {
+  position: absolute;
+  width: 224px;
+  height: 167px;
+  top: 16px;
+  left: 566px;
+}
+
+.xp-circle-img {
+  position: absolute;
+  width: 170px;
+  height: 167px;
+  top: 0;
+  left: 27px;
+}
+
+.xp-value {
+  position: absolute;
+  width: 224px;
+  top: 73px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 36px;
+  color: var(--color-text-light);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.level-text {
+  position: absolute;
+  width: 116px;
+  top: 189px;
+  left: 620px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-accent);
+  text-align: center;
+}
+
+/* Секция предметов */
+.subjects-section {
+  position: absolute;
+  width: 808px;
+  height: 486px;
+  top: 802px;
+  left: 35px;
+}
+
+.subjects-container {
+  position: relative;
+  width: 800px;
+  height: 486px;
+  background-color: var(--color-secondary);
+  border-radius: 40px;
+}
+
+.subjects-title {
+  position: absolute;
+  width: 491px;
+  top: 43px;
+  left: 49px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 42px;
+  color: var(--color-text-light);
+}
+
+.subject-card {
+  position: absolute;
+  width: 735px;
+  height: 166px;
+  top: 119px;
+  left: 32px;
+  background-color: var(--color-bg);
+  border-radius: 40px;
+}
+
+.subject-image {
+  position: absolute;
+  width: 102px;
+  height: 124px;
+  top: 21px;
+  left: 16px;
+}
+
+.subject-name {
+  position: absolute;
+  width: 475px;
+  top: 20px;
+  left: 138px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 42px;
+}
+
+.subject-description {
+  position: absolute;
+  width: 324px;
+  top: 96px;
+  left: 138px;
+  font-family: 'Onest', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.new-subjects-text {
+  position: absolute;
+  width: 487px;
+  top: 350px;
+  left: 151px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+/* Навигация */
+
+/* Адаптивность */
+@media (max-width: 870px) {
+  .main-container {
+    width: 100%;
+    padding: 0 15px;
+  }
+  
+  .header,
+  .tasks-section,
+  .subjects-section,
+  .navigation {
+    width: calc(100% - 70px);
+    left: 15px;
+  }
+}
+
+.navigation {
+  position: absolute;
+  width: 811px;
+  height: 141px;
+  top: 1709px;
+  left: 30px;
+}
+
+.nav-container {
+  position: relative;
+  width: 805px;
+  height: 141px;
+  background-color: var(--color-primary);
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.nav-icon {
+  width: 62px;
+  height: 55px;
+  margin-bottom: 5px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+  transition: filter 0.3s ease;
+}
+
+.nav-item.active .nav-icon {
+  filter: brightness(0) saturate(100%) invert(39%) sepia(98%) saturate(7486%) hue-rotate(266deg) brightness(91%) contrast(101%);
+}
+
+.nav-label {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  text-align: center;
+  color: var(--color-text-light);
+  transition: color 0.3s ease;
+}
+
+.nav-item.active .nav-label {
+  color: var(--color-accent);
+}
