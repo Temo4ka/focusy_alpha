@@ -58,7 +58,7 @@ export const IphoneProMax = () => {
   const handleProfileClick = () => {
     console.log("Открытие профиля");
     // Логика открытия профиля
-    navigate('/profile');
+    navigate('/ProfilePage');
   };
 
   const handleAddPointsClick = () => {
