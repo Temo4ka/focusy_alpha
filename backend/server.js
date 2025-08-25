@@ -55,8 +55,8 @@ async function startServer() {
     await sequelize.authenticate();
     console.log('✅ Подключение к базе данных установлено');
     
-    // Синхронизация моделей
-    await sequelize.sync({ alter: true });
+    // Синхронизация моделей (без изменения уже существующей схемы)
+    await sequelize.sync();
     console.log('✅ Модели синхронизированы');
     
     // Запуск сервера

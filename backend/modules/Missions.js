@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Mission = sequelize.define('Mission', {
+    mission_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     title: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -15,16 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     reward_coins: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     }
   }, {
+    tableName: 'missions',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: false
   });
-
-  Mission.associate = (models) => {
-    Mission.hasMany(models.UserMission, { foreignKey: 'mission_id' });
-  };
 
   return Mission;
 };

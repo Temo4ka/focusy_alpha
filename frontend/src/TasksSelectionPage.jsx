@@ -8,6 +8,7 @@ import dogHouse from "./assets/dog-house.png";
 import comboChart from "./assets/combo-chart.png";
 import "./styles.css";
 import arrow8 from "./assets/arrow8.png";
+import { useAuth } from "./contexts/AuthContext";
 
 const TaskIcon = ({ folder, fallbackText }) => {
   const candidates = useMemo(
@@ -40,8 +41,8 @@ const TaskIcon = ({ folder, fallbackText }) => {
 };
 
 export const TasksSelectionPage = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeNav, setActiveNav] = useState("");
-  const [points, setPoints] = useState(1200);
   const navigate = useNavigate();
 
   const navigationItems = [
@@ -57,7 +58,6 @@ export const TasksSelectionPage = () => {
   };
 
   const handleProfileClick = () => navigate("/ProfilePage");
-  const handleAddPointsClick = () => setPoints((p) => p + 100);
 
   const tasks = [
     { id: 4, folder: "Ex_4", title: "Задание 4", subtitle: "Постановка ударения", iconText: "Á", progress: 60, color: "#4CAF50" },
@@ -82,18 +82,15 @@ export const TasksSelectionPage = () => {
             <button className="profile-btn" onClick={handleProfileClick}>
               <div className="btn-content outlined">
                 <img className="btn-icon" alt="Profile" src={frame56} />
-                <span className="btn-text">Профиль</span>
+                <span className="btn-text">{isAuthenticated ? (user?.name || 'Профиль') : 'Профиль'}</span>
               </div>
             </button>
 
             <div className="points-container">
               <div className="points-display">
                 <img className="points-icon" alt="Coin" src={i2} />
-                <span className="points-value">{points}</span>
+                <span className="points-value">{user?.coins ?? 0}</span>
               </div>
-              <button className="add-points-btn" onClick={handleAddPointsClick}>
-                <span className="add-points-text">+</span>
-              </button>
             </div>
           </div>
         </header>

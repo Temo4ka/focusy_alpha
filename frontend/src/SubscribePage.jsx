@@ -7,6 +7,7 @@ import leaderboard from "./assets/leaderboard.png";
 import dogHouse from "./assets/dog-house.png";
 import comboChart from "./assets/combo-chart.png";
 import "./styles.css";
+import { useAuth } from "./contexts/AuthContext";
 
 const FeatureIcon = ({ name }) => {
   const candidates = useMemo(() => {
@@ -42,8 +43,8 @@ const ArrowIcon = ({ className }) => {
 };
 
 export const SubscribePage = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeNav, setActiveNav] = useState("");
-  const [points, setPoints] = useState(1200);
   const [selectedPlan, setSelectedPlan] = useState("6m");
   const navigate = useNavigate();
 
@@ -60,7 +61,6 @@ export const SubscribePage = () => {
   };
 
   const handleProfileClick = () => navigate("/ProfilePage");
-  const handleAddPointsClick = () => setPoints((p) => p + 100);
 
   const features = [
     { key: "solve", text: "Нарешивай задания сколько хочешь" },
@@ -89,18 +89,15 @@ export const SubscribePage = () => {
             <button className="profile-btn" onClick={handleProfileClick}>
               <div className="btn-content outlined">
                 <img className="btn-icon" alt="Profile" src={frame56} />
-                <span className="btn-text">Профиль</span>
+                <span className="btn-text">{isAuthenticated ? (user?.name || 'Профиль') : 'Профиль'}</span>
               </div>
             </button>
 
             <div className="points-container">
               <div className="points-display">
                 <img className="points-icon" alt="Coin" src={i2} />
-                <span className="points-value">{points}</span>
+                <span className="points-value">{user?.coins ?? 0}</span>
               </div>
-              <button className="add-points-btn" onClick={handleAddPointsClick}>
-                <span className="add-points-text">+</span>
-              </button>
             </div>
           </div>
         </header>
@@ -108,6 +105,9 @@ export const SubscribePage = () => {
         {/* Title and features */}
         <section className="subscribe-section">
           <h2 className="subscribe-title">ПОДПИСКА</h2>
+          <div style={{ marginTop: 8, marginBottom: 8 }}>
+            Статус: {user?.subscribe ? 'Активна' : 'Нет'}
+          </div>
           <ul className="subscribe-features">
             {features.map((f) => (
               <li key={f.key} className="subscribe-feature">

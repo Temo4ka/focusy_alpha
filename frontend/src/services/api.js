@@ -206,7 +206,8 @@ export const apiUtils = {
       age: user.age,
       experience: user.experience_points || 0,
       coins: user.coins || 0,
-      level: Math.floor((user.experience_points || 0) / 1000) + 1
+      level: Math.floor((user.experience_points || 0) / 1000) + 1,
+      subscribe: Boolean(user.subscribe)
     };
   },
 

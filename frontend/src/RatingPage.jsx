@@ -8,15 +8,16 @@ import dogHouse from "./assets/dog-house.png";
 import comboChart from "./assets/combo-chart.png";
 import studentSleep from "./assets/rectangle188.png"; // fallback if provided image missing
 import "./styles.css";
+import { useAuth } from "./contexts/AuthContext";
 
 // Image served from public folder so the app doesn't break if file isn't present yet
 // Use absolute path from public folder (expects file: frontend/public/rating-octo/rating-octo.png)
 const mascotPublicPath = "/rating-octo/rating-octo.png";
 
 export const RatingPage = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeNav, setActiveNav] = useState("rating");
-  const [points, setPoints] = useState(1200);
-  const [mascotSrc, setMascotSrc] = useState("/rating-octo/rating-octo.png");
+  const [mascotSrc, setMascotSrc] = useState(mascotPublicPath);
   const navigate = useNavigate();
 
   const navigationItems = [
@@ -53,8 +54,6 @@ export const RatingPage = () => {
     navigate("/ProfilePage");
   };
 
-  const handleAddPointsClick = () => setPoints((p) => p + 100);
-
   return (
     <div className="app-container">
       <div className="main-container">
@@ -69,18 +68,15 @@ export const RatingPage = () => {
             <button className="profile-btn" onClick={handleProfileClick}>
               <div className="btn-content outlined">
                 <img className="btn-icon" alt="Profile" src={frame56} />
-                <span className="btn-text">Профиль</span>
+                <span className="btn-text">{isAuthenticated ? (user?.name || 'Профиль') : 'Профиль'}</span>
               </div>
             </button>
 
             <div className="points-container">
               <div className="points-display">
                 <img className="points-icon" alt="Coin" src={i2} />
-                <span className="points-value">{points}</span>
+                <span className="points-value">{user?.coins ?? 0}</span>
               </div>
-              <button className="add-points-btn" onClick={handleAddPointsClick}>
-                <span className="add-points-text">+</span>
-              </button>
             </div>
           </div>
         </header>

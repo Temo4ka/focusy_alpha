@@ -6,20 +6,15 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       comment: 'ID задания'
     },
-    subject_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      comment: 'Ссылка на предмет'
-    },
     type: {
       type: DataTypes.STRING(50),
       allowNull: false,
       comment: 'Тип задания'
     },
     difficulty: {
-      type: DataTypes.ENUM('easy', 'medium', 'hard'),
+      type: DataTypes.STRING(10),
       defaultValue: 'medium',
-      comment: 'Уровень сложности'
+      comment: 'Уровень сложности (easy|medium|hard)'
     },
     content: {
       type: DataTypes.TEXT,
@@ -37,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       comment: 'Активно'
     }
   }, {
-    tableName: 'content_management_task',
+    tableName: 'tasks',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: false

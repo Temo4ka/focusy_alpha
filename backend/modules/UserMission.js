@@ -1,30 +1,33 @@
 module.exports = (sequelize, DataTypes) => {
-  const Mission = sequelize.define('Mission', {
-    title: {
-      type: DataTypes.STRING(100),
+  const UserMission = sequelize.define('UserMission', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    user_id: {
+      type: DataTypes.BIGINT,
       allowNull: false
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    reward_exp: {
+    mission_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    reward_coins: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+    is_completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    completed_at: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
-    timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: false
+    tableName: 'user_missions',
+    timestamps: false,
+    indexes: [
+      { unique: true, fields: ['user_id', 'mission_id'] }
+    ]
   });
 
-  Mission.associate = (models) => {
-    Mission.hasMany(models.UserMission, { foreignKey: 'mission_id' });
-  };
-
-  return Mission;
+  return UserMission;
 };

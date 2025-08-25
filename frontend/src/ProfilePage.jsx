@@ -9,8 +9,10 @@ import image2 from "./assets/i2.png";
 import image from "./assets/image.png";
 import leaderboard from "./assets/leaderboard.png";
 import "./styles.css";
+import { useAuth } from "./contexts/AuthContext";
 
 export const ProfilePage = () => {
+  const { user } = useAuth();
   const [activeNav, setActiveNav] = useState('');
   const navigate = useNavigate();
 
@@ -40,13 +42,8 @@ export const ProfilePage = () => {
 
   const handleNavClick = (id) => {
     setActiveNav(id);
-    console.log(`Переход на: ${id}`);
-    if (id === 'home') {
-      navigate('/');
-    }
-    if (id === 'rating') {
-      navigate('/rating');
-    }
+    if (id === 'home') navigate('/');
+    if (id === 'rating') navigate('/rating');
   };
 
   const handleBackClick = () => {
@@ -54,8 +51,7 @@ export const ProfilePage = () => {
   };
 
   const handleOpenSection = (section) => {
-    console.log(`Открытие раздела: ${section}`);
-    // Здесь можно добавить логику открытия соответствующих разделов
+    // Доп. логика по разделам
   };
 
   return (
@@ -86,22 +82,22 @@ export const ProfilePage = () => {
                 <img className="profile-image" alt="Profile" src={image} />
               </div>
               <div className="profile-details">
-                <h2 className="profile-name">Иванова Ольга</h2>
-                <p className="profile-class">11 класс</p>
+                <h2 className="profile-name">{user?.name || 'Гость'}</h2>
+                <p className="profile-class">{user?.user_class || 'Класс не указан'}</p>
               </div>
             </div>
 
             <div className="stats-container">
               <div className="stat-card">
                 <h3 className="stat-title">Прогресс</h3>
-                <p className="stat-value">750 XP</p>
+                <p className="stat-value">{user?.experience ?? 0} XP</p>
               </div>
 
               <div className="stat-card coins-card">
                 <h3 className="stat-title">Монеты</h3>
                 <div className="coins-value">
                   <img className="coin-icon" alt="Coin" src={image2} />
-                  <p className="stat-value">1200</p>
+                  <p className="stat-value">{user?.coins ?? 0}</p>
                 </div>
               </div>
             </div>
@@ -124,7 +120,7 @@ export const ProfilePage = () => {
               </div>
 
               <div className="action-card" onClick={() => handleOpenSection('subscription')}>
-                <h3 className="action-title">Подписка активна до: 23.03.26</h3>
+                <h3 className="action-title">Подписка: {user?.subscribe ? 'Активна' : 'Нет'}</h3>
                 <div className="action-button">
                   <span className="action-text">Управлять подпиской</span>
                   <img className="action-arrow" alt="Arrow" src={arrow9} />

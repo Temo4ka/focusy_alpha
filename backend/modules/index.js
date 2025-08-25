@@ -8,9 +8,11 @@ const Mission = require('./Missions')(sequelize, DataTypes);
 const UserMission = require('./UserMission')(sequelize, DataTypes);
 const UserTaskAttempt = require('./UserTaskAttempt')(sequelize, DataTypes);
 
-// Установка связей
-User.belongsToMany(Mission, { through: UserMission, foreignKey: 'user_id' });
-Mission.belongsToMany(User, { through: UserMission, foreignKey: 'mission_id' });
+// Установка связей (явные FK и таблицы соответствуют Django моделям)
+User.hasMany(UserMission, { foreignKey: 'user_id' });
+Mission.hasMany(UserMission, { foreignKey: 'mission_id' });
+UserMission.belongsTo(User, { foreignKey: 'user_id' });
+UserMission.belongsTo(Mission, { foreignKey: 'mission_id' });
 
 User.hasMany(UserTaskAttempt, { foreignKey: 'user_id' });
 UserTaskAttempt.belongsTo(User, { foreignKey: 'user_id' });

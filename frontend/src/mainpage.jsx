@@ -9,11 +9,16 @@ import i2 from "./assets/i2.png";
 import leaderboard from "./assets/leaderboard.png";
 import rectangle188 from "./assets/rectangle188.png";
 import "./styles.css";
+import { useAuth } from "./contexts/AuthContext";
 
 export const IphoneProMax = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeNav, setActiveNav] = useState('home');
-  const [points, setPoints] = useState(1200);
   const navigate = useNavigate();
+
+  const userName = user?.name || "Гость";
+  const coins = user?.coins ?? 0;
+  const isSubscribed = Boolean(user?.subscribe);
 
   const navigationItems = [
     {
@@ -58,19 +63,10 @@ export const IphoneProMax = () => {
   };
 
   const handleProfileClick = () => {
-    console.log("Открытие профиля");
-    // Логика открытия профиля
     navigate('/ProfilePage');
   };
 
-  const handleAddPointsClick = () => {
-    const newPoints = points + 100;
-    setPoints(newPoints);
-    console.log("Добавлено 100 монет");
-  };
-
   const handleSubjectClick = (subjectId) => {
-    console.log(`Выбран предмет: ${subjectId}`);
     navigate('/tasks');
   };
 
@@ -92,18 +88,15 @@ export const IphoneProMax = () => {
             <button className="profile-btn" onClick={handleProfileClick}>
               <div className="btn-content outlined">
                 <img className="btn-icon" alt="Frame" src={frame56} />
-                <span className="btn-text">Профиль</span>
+                <span className="btn-text">{isAuthenticated ? userName : "Профиль"}</span>
               </div>
             </button>
 
             <div className="points-container">
               <div className="points-display">
                 <img className="points-icon" alt="I" src={i2} />
-                <span className="points-value">{points}</span>
+                <span className="points-value">{coins}</span>
               </div>
-              <button className="add-points-btn" onClick={handleAddPointsClick}>
-                <span className="add-points-text">+</span>
-              </button>
             </div>
           </div>
         </header>
@@ -116,18 +109,16 @@ export const IphoneProMax = () => {
             </div>
 
             <div className="progress-container">
-              <div className="progress-label">Выполнено:</div>
-              <div className="progress-bg"></div>
-              <div className="progress-fill"></div>
-              <div className="progress-value">75%</div>
+              <div className="progress-label">Подписка:</div>
+              <div className="progress-value">{isSubscribed ? 'Активна' : 'Нет'}</div>
             </div>
 
             <div className="xp-circle">
               <img className="xp-circle-img" alt="Ellipse" src={ellipse188} />
-              <div className="xp-value">750 XP</div>
+              <div className="xp-value">{(user?.experience ?? 0)} XP</div>
             </div>
 
-            <div className="level-text">Ступень 1</div>
+            <div className="level-text">Ступень {(user?.level ?? 1)}</div>
           </div>
         </section>
 
