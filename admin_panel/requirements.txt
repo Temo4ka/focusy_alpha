@@ -1,0 +1,7 @@
+Django>=4.2,<5.0
+psycopg2-binary>=2.8
+python-dotenv>=0.19
+Pillow>=9.0
+django-import-export>=3.0
+django-filter>=22.0
+django-extensions>=3.0

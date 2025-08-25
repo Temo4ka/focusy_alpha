@@ -94,6 +94,12 @@ body {
   cursor: pointer;
 }
 
+/* Reusable variant for placing profile on the right if needed */
+.profile-btn.right {
+  left: auto;
+  right: 35px;
+}
+
 .btn-content {
   display: inline-flex;
   align-items: center;
@@ -102,6 +108,23 @@ body {
   padding: 10px 20px;
   position: relative;
   border-radius: 25px;
+}
+
+/* Outline style for Profile/Back buttons */
+.btn-content.outlined {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+              linear-gradient(180deg, #f0efd7 0%, #7a64cc 100%) border-box;
+  border-radius: 25px;
+}
+
+.btn-text {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 36px;
+  white-space: nowrap;
+  color: #12327D;
 }
 
 .btn-icon {
@@ -445,6 +468,439 @@ body {
 
 .nav-item.active .nav-label {
   color: var(--color-accent);
+}
+
+/* Rating page */
+.rating-section {
+  position: absolute;
+  top: 802px; /* aligns with content flow on other pages */
+  left: 35px;
+  width: 808px;
+  min-height: 700px;
+}
+
+.rating-card {
+  position: relative;
+  width: 800px;
+  min-height: 630px;
+  background: linear-gradient(180deg, #223a90 0%, #6f55c7 100%);
+  border-radius: 40px;
+  padding: 40px 40px 160px 40px;
+  color: var(--color-text-light);
+}
+
+.rating-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 52px;
+  margin-bottom: 12px;
+}
+
+.rating-paragraph {
+  font-family: 'Onest', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 26px;
+  margin-bottom: 10px;
+}
+
+.rating-subtitle {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 52px;
+  margin: 28px 0 12px 0;
+}
+
+.rating-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.rating-list li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 16px;
+  font-family: 'Onest', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+.rating-list li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-text-light);
+}
+
+.rating-mascot {
+  position: absolute;
+  right: 10px;
+  bottom: -70px; /* опускаем немного ниже, чтобы не залезала на текст */
+}
+
+.rating-mascot-img {
+  width: 300px;
+  height: auto;
+}
+
+/* Tasks selection page */
+.taskselect-section {
+  position: absolute;
+  top: 533px; /* чуть ниже хедера, как в макете */
+  left: 35px;
+  width: 808px;
+}
+
+.taskselect-container {
+  position: relative;
+  width: 800px;
+  background-color: var(--color-secondary);
+  border-radius: 40px;
+  padding: 35px 24px 30px 24px;
+  min-height: 950px;
+}
+
+.taskselect-title {
+  color: var(--color-text-light);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 52px;
+  margin-left: 24px;
+  margin-bottom: 24px;
+}
+
+.taskselect-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.taskselect-item {
+  background-color: var(--color-bg);
+  border-radius: 40px;
+  height: 110px;
+  display: grid;
+  grid-template-columns: 110px 1fr 120px;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.taskselect-icon {
+  width: 74px;
+  height: 74px;
+  border-radius: 20px;
+  background: #e7e9f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.taskselect-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.taskselect-icon-fallback {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 34px;
+  color: var(--color-text-dark);
+}
+
+.taskselect-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.taskselect-task {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--color-text-dark);
+}
+
+.taskselect-sub {
+  font-family: 'Onest', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #2b2f48;
+  opacity: 0.9;
+}
+
+.taskselect-progress {
+  justify-self: end;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+}
+
+.taskselect-footer {
+  color: var(--color-text-light);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.taskselect-back {
+  position: absolute;
+  top: 1520px; /* ниже блока "ЗАДАНИЯ" на светлом фоне */
+  left: 35px;
+}
+.taskselect-back .btn-content.outlined { padding: 12px 22px; border-radius: 18px; }
+.taskselect-back .btn-icon { width: 42px; }
+.taskselect-back .btn-text { font-size: 32px; color: #12327D; }
+
+/* Difficulty page */
+/* Subscribe page */
+.subscribe-section {
+  position: absolute;
+  top: 600px; /* увеличили отступ от хедера */
+  left: 35px;
+  width: 808px;
+}
+
+.subscribe-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: 60px;
+  color: var(--color-text-dark);
+  margin-bottom: 24px;
+}
+
+.subscribe-features { list-style: none; padding: 0; margin: 0 0 24px 0; }
+.subscribe-feature { display: flex; align-items: center; gap: 14px; margin: 12px 0; }
+.subscribe-feature-icon { width: 28px; height: 28px; }
+.subscribe-feature-text { font-size: 28px; color: var(--color-text-dark); font-family: 'Unbounded', sans-serif; font-weight: 600; }
+
+.subscribe-plans {
+  position: absolute;
+  top: 957px; /* сдвиг вниз синхронно с заголовком */
+  left: 35px;
+  width: 808px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.subscribe-plan {
+  background: #e9e0ff;
+  border: 3px solid #b99cff;
+  border-radius: 28px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  cursor: pointer;
+}
+.subscribe-plan.active { background: #a98df3; border-color: #a98df3; }
+
+.subscribe-plan-title { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 48px; color: var(--color-text-dark); }
+.subscribe-plan-monthly { font-family: 'Unbounded', sans-serif; font-weight: 400; font-size: 22px; color: var(--color-text-dark); opacity: 0.7; }
+
+.subscribe-plan-right { display: inline-flex; align-items: center; gap: 14px; justify-self: end; }
+.subscribe-plan-price { font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: 44px; color: var(--color-text-dark); }
+.subscribe-plan-arrow { width: 28px; height: 28px; }
+
+/* Final subscribe CTA button on subscribe page */
+.subscribe-final {
+  position: absolute;
+  top: 1445px;
+  left: 35px;
+  width: 808px;
+  display: flex;
+  justify-content: center;
+}
+.subscribe-final-btn {
+  width: 640px; /* уже, как на макете */
+  max-width: 100%;
+  padding: 22px 22px;
+  background: var(--color-primary);
+  color: #12327D; /* текст перекроем внутри градиентной окантовки */
+  border: none;
+  cursor: pointer;
+  border-radius: 24px;
+}
+.subscribe-final-btn {
+  background: linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+              linear-gradient(180deg, #f0efd7 0%, #7a64cc 100%) border-box;
+  border: 7px solid transparent;
+  color: #12327D;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+}
+/* Subscribe button on main page */
+.subscribe-cta {
+  position: absolute;
+  top: 1320px; /* под блоком предметов */
+  left: 35px;
+  width: 808px;
+}
+.subscribe-cta-btn {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  padding: 25px 22px;
+  border-radius: 24px;
+  color: #fff;
+  background: linear-gradient(270deg, #7f5ce8 0%, #a78af1 100%);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 30px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.subscribe-cta-btn img { position: static; }
+.subscribe-arrow { width: 50px; height: 50px; display: inline-block; }
+.difficulty-header-section {
+  position: absolute;
+  top: 533px;
+  left: 35px;
+  width: 808px;
+}
+
+.difficulty-header-card {
+  background-color: var(--color-secondary);
+  border-radius: 30px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  align-items: center;
+}
+
+.difficulty-title {
+  color: var(--color-text-light);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: 46px;
+}
+
+.difficulty-subtitle {
+  color: var(--color-text-light);
+  opacity: 0.9;
+  margin-top: 8px;
+  font-family: 'Onest', sans-serif;
+  font-size: 20px;
+}
+
+.difficulty-progress {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.difficulty-progress-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: conic-gradient(#4CAF50 0% 60%, #ffffff 60% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.difficulty-options-section {
+  position: absolute;
+  top: 740px;
+  left: 35px;
+  width: 808px;
+  display: flex;
+  flex-direction: column;
+}
+
+.difficulty-prompt {
+  color: var(--color-text-dark);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  margin: 24px 0;
+}
+
+.difficulty-option {
+  border-radius: 30px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  grid-template-rows: auto auto auto;
+  align-items: start;
+}
+
+.difficulty-option.light { background: #a78af1; }
+.difficulty-option.medium { background: #8969e9; }
+.difficulty-option.hard { background: #554089; }
+
+.difficulty-option-title {
+  color: #ffffff;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.difficulty-option-sub {
+  color: #ffffff;
+  font-family: 'Onest', sans-serif;
+  font-size: 20px;
+  opacity: 0.9;
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.difficulty-option-meta {
+  justify-self: end;
+  color: #ffffff;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.difficulty-option-arrow {
+  justify-self: end;
+  align-self: center;
+  color: #ffffff;
+  font-size: 42px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Back button on difficulty page */
+.difficulty-back { margin-top: 10px; align-self: flex-start; }
+.difficulty-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: static !important;
+  width: auto;
+  height: auto;
+  top: unset;
+  left: unset;
+  display: inline-flex;
+}
+
+/* Position and size tuning for Back button to match mock */
+.difficulty-back .btn-content.outlined {
+  padding: 12px 22px;
+  border-radius: 18px;
+}
+.difficulty-back .btn-icon { width: 42px; }
+.difficulty-back .btn-text {
+  font-size: 32px;
 }
 
 /* Новые стили из prof_style.css */

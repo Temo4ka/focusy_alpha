@@ -3,29 +3,41 @@ module.exports = (sequelize, DataTypes) => {
     user_id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      comment: 'Telegram ID пользователя'
     },
     name: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: false,
+      comment: 'Имя пользователя'
     },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+    user_class: {
+      type: DataTypes.STRING(10),
+      defaultValue: "4",
+      comment: 'В каком классе учится'
     },
     consent_given: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
+      comment: 'Согласие на обработку данных'
     },
     experience_points: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
+      comment: 'Очки опыта'
     },
     coins: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
+      comment: 'Монеты'
+    },
+    subscribe: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      comment: 'Подписка'
     }
   }, {
+    tableName: 'users',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: false

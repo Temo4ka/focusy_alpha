@@ -11,7 +11,7 @@ import leaderboard from "./assets/leaderboard.png";
 import "./styles.css";
 
 export const ProfilePage = () => {
-  const [activeNav, setActiveNav] = useState('home');
+  const [activeNav, setActiveNav] = useState('');
   const navigate = useNavigate();
 
   const navigationItems = [
@@ -44,6 +44,9 @@ export const ProfilePage = () => {
     if (id === 'home') {
       navigate('/');
     }
+    if (id === 'rating') {
+      navigate('/rating');
+    }
   };
 
   const handleBackClick = () => {
@@ -62,7 +65,7 @@ export const ProfilePage = () => {
         <header className="header">
           <div className="header-content">
             <button className="profile-btn" onClick={handleBackClick}>
-              <div className="btn-content">
+              <div className="btn-content outlined">
                 <img className="btn-icon" alt="Back" src={arrow8} />
                 <span className="btn-text">Назад</span>
               </div>

@@ -1,0 +1,16 @@
+# Server settings
+PORT=3001
+NODE_ENV=development
+
+# JWT settings
+JWT_SECRET=focusy-jwt-secret-key-change-in-production
+
+# Database settings (пока используем SQLite для тестирования)  
+DB_NAME=focusy_db
+DB_USER=postgres
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=5432
+
+# CORS settings
+FRONTEND_URL=http://localhost:3000

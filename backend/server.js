@@ -1,65 +1,74 @@
 const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
-const { User } = require('../models');
-const bcrypt = require('bcryptjs');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
-// Регистрация
-router.post('/register', async (req, res) => {
-  try {
-    const { name, email, password, class: userClass } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      class: userClass
-    });
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+// Middleware
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Логин
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: 'Неверные учетные данные' });
+// Импорт моделей и инициализация БД
+const { sequelize } = require('./modules');
+
+// Импорт маршрутов
+const userRoutes = require('./routes/userRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const missionRoutes = require('./routes/missionRoutes');
+const testRoutes = require('./routes/testRoutes');
+
+// Маршруты API
+app.use('/api/users', userRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/missions', missionRoutes);
+app.use('/api/test', testRoutes);
+
+// Базовый маршрут
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'FOCUSY API Server', 
+    version: '1.0.0',
+    endpoints: {
+      users: '/api/users',
+      tasks: '/api/tasks', 
+      missions: '/api/missions'
     }
-
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    res.json({ token, user: { name: user.name, class: user.class, xp: user.xp, coins: user.coins } });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  });
 });
 
-// Получение данных пользователя
-router.get('/:id', async (req, res) => {
+// Обработка ошибок
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Что-то пошло не так!' });
+});
+
+// Запуск сервера
+async function startServer() {
   try {
-    const user = await User.findByPk(req.params.id, {
-      attributes: { exclude: ['password'] }
-    });
+    // Проверка подключения к БД
+    await sequelize.authenticate();
+    console.log('✅ Подключение к базе данных установлено');
     
-    if (!user) {
-      return res.status(404).json({ error: 'Пользователь не найден' });
-    }
-
-    res.json(user);
+    // Синхронизация моделей
+    await sequelize.sync({ alter: true });
+    console.log('✅ Модели синхронизированы');
+    
+    // Запуск сервера
+    app.listen(PORT, () => {
+      console.log(`🚀 FOCUSY API сервер запущен на http://localhost:${PORT}`);
+      console.log(`📊 Админ панель: http://localhost:8001/admin/`);
+      console.log(`🌐 Фронтенд: http://localhost:3000`);
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('❌ Ошибка запуска сервера:', error);
+    process.exit(1);
   }
-});
+}
 
-module.exports = router;
+startServer();

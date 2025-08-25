@@ -45,14 +45,16 @@ export const IphoneProMax = () => {
       title: "РУССКИЙ ЯЗЫК",
       description: "Решай задания с 4 по 20 \nи получай очки опыта",
       image: rectangle188,
+      publicImage: "/subjects/russian/icon.png",
       imageAlt: "Rectangle",
     },
   ];
 
   const handleNavClick = (id) => {
     setActiveNav(id);
-    console.log(`Переход на: ${id}`);
-    // Здесь можно добавить логику перехода между страницами
+    if (id === 'home') navigate('/');
+    if (id === 'rating') navigate('/rating');
+    if (id === 'statistics') console.log('Открыть статистику');
   };
 
   const handleProfileClick = () => {
@@ -69,7 +71,11 @@ export const IphoneProMax = () => {
 
   const handleSubjectClick = (subjectId) => {
     console.log(`Выбран предмет: ${subjectId}`);
-    // Логика открытия предмета
+    navigate('/tasks');
+  };
+
+  const goSubscribe = () => {
+    navigate('/subscribe');
   };
 
   return (
@@ -84,7 +90,7 @@ export const IphoneProMax = () => {
             </div>
 
             <button className="profile-btn" onClick={handleProfileClick}>
-              <div className="btn-content">
+              <div className="btn-content outlined">
                 <img className="btn-icon" alt="Frame" src={frame56} />
                 <span className="btn-text">Профиль</span>
               </div>
@@ -139,7 +145,10 @@ export const IphoneProMax = () => {
                 <img
                   className="subject-image"
                   alt={subject.imageAlt}
-                  src={subject.image}
+                  src={subject.publicImage || subject.image}
+                  onError={(e) => {
+                    e.currentTarget.src = subject.image;
+                  }}
                 />
                 <h3 className="subject-name">{subject.title}</h3>
                 <p className="subject-description">
@@ -176,6 +185,12 @@ export const IphoneProMax = () => {
             ))}
           </div>
         </nav>
+        <div className="subscribe-cta">
+          <button className="subscribe-cta-btn" onClick={goSubscribe}>
+            Оформить подписку
+            <img className="subscribe-arrow" alt="arrow" src={"/arrow.png"} onError={(e)=>{e.currentTarget.src='/arrow.svg'}} />
+          </button>
+        </div>
       </div>
     </div>
   );
