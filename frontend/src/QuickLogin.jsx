@@ -42,7 +42,7 @@ export const QuickLogin = () => {
     <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <div className="main-container" style={{ maxWidth: 360, width: '100%', padding: 16 }}>
         <h1 className="logo-title" style={{ textAlign: 'center', marginBottom: 16 }}>FOCUSY</h1>
-        <div className="subject-card" style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: 'translateX(-50%)' }}>
+        <div className="subject-card" style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: 'translateX(-25%)' }}>
           <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 16, fontWeight: 600 }}>
             Быстрый вход
           </div>
