@@ -1,0 +1,10 @@
+# Django settings
+DJANGO_SECRET_KEY=focusy-django-secret-key-change-in-production
+DEBUG=True
+
+# Database settings (должны совпадать с настройками Node.js API)
+DB_NAME=focusy_db
+DB_USER=temo4ka
+DB_PASSWORD=
+DB_HOST=localhost
+DB_PORT=5432

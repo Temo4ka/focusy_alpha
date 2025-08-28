@@ -50,24 +50,49 @@ export const userAPI = {
 
   // Вход
   login: async (credentials) => {
-    const response = await api.post('/users/login', credentials);
-    if (response.data.token) {
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    try {
+      console.log('API: попытка входа с credentials:', credentials);
+      
+      const response = await api.post('/users/login', credentials);
+      console.log('API: ответ сервера:', response.data);
+      
+      if (response.data && response.data.user) {
+        if (response.data.token) {
+          console.log('API: сохранение токена и данных пользователя в localStorage');
+          localStorage.setItem('authToken', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          console.log('API: данные сохранены в localStorage');
+        }
+        return response.data;
+      } else {
+        console.error('API: неверный формат ответа от сервера');
+        throw new Error('Неверный формат ответа от сервера');
+      }
+    } catch (error) {
+      console.error('API: ошибка входа:', error);
+      throw error;
     }
-    return response.data;
   },
 
   // Выход
   logout: () => {
+    console.log('API: выход из учетной записи, очистка localStorage');
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    console.log('API: localStorage очищен');
   },
 
   // Получение данных пользователя
   getUser: async (userId) => {
-    const response = await api.get(`/users/${userId}`);
-    return response.data;
+    try {
+      console.log('API: запрос данных пользователя с ID:', userId);
+      const response = await api.get(`/users/${userId}`);
+      console.log('API: получены данные пользователя:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('API: ошибка получения пользователя:', error);
+      throw error;
+    }
   },
 
   // Получение текущего пользователя из localStorage
@@ -89,6 +114,19 @@ export const taskAPI = {
     const params = new URLSearchParams(filters);
     const response = await api.get(`/tasks?${params}`);
     return response.data;
+  },
+
+  // Получение заданий по предмету с прогрессом пользователя
+  getTasksBySubject: async (subjectId, userId) => {
+    try {
+      console.log('API: запрос заданий для предмета', subjectId, 'пользователя', userId);
+      const response = await api.get(`/tasks/subject/${subjectId}?user_id=${userId}`);
+      console.log('API: получен ответ от сервера:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('API: ошибка получения заданий по предмету:', error);
+      throw error;
+    }
   },
 
   // Получение конкретного задания
@@ -202,6 +240,7 @@ export const apiUtils = {
   formatUserData: (user) => {
     return {
       id: user.user_id || user.id,
+      user_id: user.user_id || user.id, // Добавляем user_id для совместимости
       name: user.name,
       age: user.age,
       experience: user.experience_points || 0,

@@ -15,8 +15,9 @@ function App() {
     <AuthProvider>
       <Router>
                     <Routes>
-              <Route path="/" element={<QuickLogin />} />
+              <Route path="/" element={<IphoneProMax />} />
               <Route path="/home" element={<IphoneProMax />} />
+              <Route path="/login" element={<QuickLogin />} />
               <Route path="/ProfilePage" element={<ProfilePage />} />
               <Route path="/rating" element={<RatingPage />} />
               <Route path="/tasks" element={<TasksSelectionPage />} />

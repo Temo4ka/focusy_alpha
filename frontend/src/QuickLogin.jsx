@@ -1,94 +1,130 @@
 import React, { useState } from 'react';
+import { useAuth } from './contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { userAPI, apiUtils } from './services/api';
-import { useAuth } from './contexts/AuthContext';
 import './styles.css';
 
 export const QuickLogin = () => {
-  const [userId, setUserId] = useState('');
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState('1001');
+  const { login, user, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    const trimmed = String(userId).trim();
-    if (!trimmed) {
-      setError('Введите ID пользователя');
-      return;
-    }
+  const demoUsers = [
+    { id: '1001', name: 'Анна Петрова' },
+    { id: '1002', name: 'Максим Волков' },
+    { id: '1003', name: 'София Смирнова' },
+    { id: '1004', name: 'Даниил Орлов' },
+    { id: '1005', name: 'Полина Ветрова' }
+  ];
 
-    setIsLoading(true);
+  const handleQuickLogin = async () => {
     try {
-      // Используем контекстный login, чтобы обновить глобальное состояние пользователя
-      const result = await login({ user_id: trimmed });
-      if (result?.success) {
-        navigate('/ProfilePage');
+      console.log('QuickLogin: попытка входа с user_id:', selectedUserId);
+      const result = await login({ user_id: parseInt(selectedUserId) });
+      
+      if (result.success) {
+        console.log('QuickLogin: вход успешен, переход на страницу заданий');
+        navigate('/tasks');
       } else {
-        setError(result?.error || 'Такого пользователя не существует');
+        console.error('QuickLogin: ошибка входа:', result.error);
       }
-    } catch (err) {
-      const er = apiUtils.handleError(err);
-      // 404 → пользователь не найден
-      setError(er?.error || 'Ошибка запроса');
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error('QuickLogin: ошибка входа:', error);
     }
   };
 
-  return (
-    <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      <div className="main-container" style={{ maxWidth: 360, width: '100%', padding: 16 }}>
-        <h1 className="logo-title" style={{ textAlign: 'center', marginBottom: 16 }}>FOCUSY</h1>
-        <div className="subject-card" style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', transform: 'translateX(-25%)' }}>
-          <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 16, fontWeight: 600 }}>
-            Быстрый вход
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
-              <input
-                type="text"
-                inputMode="numeric"
-                placeholder="Введите ваш user_id"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                className="btn-text"
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  border: '1px solid #e0e0e0',
-                  outline: 'none',
-                  textAlign: 'center',
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="profile-btn"
-                style={{
-                  alignSelf: 'center',
-                  width: '100%',
-                  maxWidth: 200,
-                  marginTop: 8,
-                  position: 'static',
-                  display: 'block'
-                }}
-              >
-                <div className="btn-content outlined" style={{ justifyContent: 'center', width: '100%' }}>
-                  <span className="btn-text">{isLoading ? 'Запрос...' : 'Запрос'}</span>
-                </div>
-              </button>
-            </div>
-          </form>
+  const handleGoToTasks = () => {
+    navigate('/tasks');
+  };
 
-          {error && (
-            <div style={{ color: '#E34B4B', marginTop: 12, fontSize: 14, textAlign: 'center' }}>{error}</div>
-          )}
+  if (isLoading) {
+    return <div className="quick-login-loading">Загрузка...</div>;
+  }
+
+  return (
+    <div className="quick-login-container">
+      <h2>Быстрый вход для тестирования</h2>
+      
+      {!isAuthenticated ? (
+        <div className="quick-login-form">
+          <p>Выберите пользователя для входа:</p>
+          <select 
+            value={selectedUserId} 
+            onChange={(e) => setSelectedUserId(e.target.value)}
+            className="quick-login-select"
+          >
+            {demoUsers.map(user => (
+              <option key={user.id} value={user.id}>
+                {user.name} (ID: {user.id})
+              </option>
+            ))}
+          </select>
+          
+          <button 
+            onClick={handleQuickLogin}
+            className="quick-login-button"
+          >
+            Войти
+          </button>
         </div>
+      ) : (
+        <div className="quick-login-success">
+          <p>✅ Вы вошли как: <strong>{user?.name}</strong></p>
+          <p>ID пользователя: <strong>{user?.user_id || user?.id}</strong></p>
+          <p>Монеты: <strong>{user?.coins || 0}</strong></p>
+          <p>Опыт: <strong>{user?.experience || 0}</strong></p>
+          
+          <div style={{ marginTop: '20px' }}>
+            <button 
+              onClick={handleGoToTasks}
+              className="quick-login-button"
+              style={{ marginRight: '10px' }}
+            >
+              Перейти к заданиям
+            </button>
+            
+            <button 
+              onClick={() => {
+                console.log('Текущее состояние пользователя:', user);
+                console.log('isAuthenticated:', isAuthenticated);
+                console.log('localStorage user:', localStorage.getItem('user'));
+                console.log('localStorage token:', localStorage.getItem('authToken'));
+              }}
+              className="quick-login-button"
+              style={{ backgroundColor: '#28a745' }}
+            >
+              Отладка (консоль)
+            </button>
+            
+            <button 
+              onClick={async () => {
+                try {
+                  console.log('Принудительная перезагрузка данных пользователя...');
+                  const freshUser = await userAPI.getUser(user?.user_id || user?.id);
+                  console.log('Свежие данные:', freshUser);
+                  const formattedUser = apiUtils.formatUserData(freshUser);
+                  console.log('Отформатированные данные:', formattedUser);
+                } catch (error) {
+                  console.error('Ошибка перезагрузки:', error);
+                }
+              }}
+              className="quick-login-button"
+              style={{ backgroundColor: '#ffc107', color: '#000' }}
+            >
+              Перезагрузить данные
+            </button>
+          </div>
+        </div>
+      )}
+      
+      <div className="quick-login-info">
+        <h3>Информация:</h3>
+        <ul>
+          <li>Это тестовая страница для быстрого входа</li>
+          <li>Используются существующие пользователи из PostgreSQL</li>
+          <li>После входа вы можете перейти к заданиям</li>
+          <li>Все данные сохраняются в localStorage</li>
+        </ul>
       </div>
     </div>
   );

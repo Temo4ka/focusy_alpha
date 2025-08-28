@@ -6,6 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       comment: 'ID задания'
     },
+    subject_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: 'ID предмета'
+    },
     type: {
       type: DataTypes.STRING(50),
       allowNull: false,

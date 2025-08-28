@@ -12,7 +12,7 @@ import "./styles.css";
 import { useAuth } from "./contexts/AuthContext";
 
 export const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [activeNav, setActiveNav] = useState('');
   const navigate = useNavigate();
 
@@ -50,26 +50,42 @@ export const ProfilePage = () => {
     navigate('/');
   };
 
+  const handleLogout = () => {
+    console.log('ProfilePage: выход из учетной записи');
+    logout();
+    navigate('/');
+  };
+
   const handleOpenSection = (section) => {
     // Доп. логика по разделам
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container profile-page">
       <div className="main-container">
         {/* Header section */}
         <header className="header">
           <div className="header-content">
-            <button className="profile-btn" onClick={handleBackClick}>
-              <div className="btn-content outlined">
-                <img className="btn-icon" alt="Back" src={arrow8} />
-                <span className="btn-text">Назад</span>
-              </div>
-            </button>
+            <div className="header-left">
+              <button className="profile-btn" onClick={handleBackClick}>
+                <div className="btn-content outlined">
+                  <img className="btn-icon" alt="Back" src={arrow8} />
+                  <span className="btn-text">Назад</span>
+                </div>
+              </button>
+            </div>
 
             <div className="logo-container">
               <img className="logo-img" alt="Logo" src={x2} />
               <h1 className="logo-title">FOCUSY</h1>
+            </div>
+
+            <div className="header-right">
+              <button className="profile-btn" onClick={handleLogout}>
+                <div className="btn-content outlined">
+                  <span className="btn-text">Выход</span>
+                </div>
+              </button>
             </div>
           </div>
         </header>

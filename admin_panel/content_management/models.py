@@ -12,6 +12,7 @@ class Subject(models.Model):
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
 
     class Meta:
+        db_table = 'subjects'
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
         ordering = ['title']

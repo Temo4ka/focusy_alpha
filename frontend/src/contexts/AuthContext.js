@@ -79,25 +79,46 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        console.log('AuthContext: проверка аутентификации...');
         dispatch({ type: AuthActionTypes.SET_LOADING, payload: true });
         
         const currentUser = userAPI.getCurrentUser();
-        if (currentUser && userAPI.isAuthenticated()) {
+        const hasToken = userAPI.isAuthenticated();
+        
+        console.log('AuthContext: текущий пользователь из localStorage:', currentUser);
+        console.log('AuthContext: есть токен:', hasToken);
+        
+        if (currentUser && hasToken) {
+          console.log('AuthContext: пользователь найден в localStorage, проверяем актуальность...');
           // Проверяем актуальность данных пользователя
           try {
-            const freshUserData = await userAPI.getUser(currentUser.id || currentUser.user_id);
+            // Используем правильный ID для PostgreSQL
+            const userId = currentUser.user_id || currentUser.id;
+            console.log('AuthContext: используем ID пользователя:', userId);
+            
+            const freshUserData = await userAPI.getUser(userId);
+            console.log('AuthContext: получены свежие данные пользователя:', freshUserData);
             const formattedUser = apiUtils.formatUserData(freshUserData);
+            console.log('AuthContext: отформатированный пользователь:', formattedUser);
             dispatch({ type: AuthActionTypes.SET_USER, payload: formattedUser });
+            console.log('AuthContext: пользователь установлен из API');
           } catch (error) {
+            console.log('AuthContext: не удалось получить свежие данные, используем кэшированные');
             // Если не удалось получить свежие данные, используем кэшированные
             const formattedUser = apiUtils.formatUserData(currentUser);
+            console.log('AuthContext: отформатированный пользователь из кэша:', formattedUser);
             dispatch({ type: AuthActionTypes.SET_USER, payload: formattedUser });
+            console.log('AuthContext: пользователь установлен из кэша');
           }
         } else {
-          dispatch({ type: AuthActionTypes.SET_LOADING, payload: false });
+          console.log('AuthContext: пользователь не найден или не авторизован, сбрасываем состояние');
+          // Сбрасываем состояние и localStorage
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('user');
+          dispatch({ type: AuthActionTypes.LOGOUT });
         }
       } catch (error) {
-        console.error('Ошибка проверки аутентификации:', error);
+        console.error('AuthContext: ошибка проверки аутентификации:', error);
         dispatch({ type: AuthActionTypes.SET_ERROR, payload: 'Ошибка проверки аутентификации' });
       }
     };
@@ -108,15 +129,28 @@ export const AuthProvider = ({ children }) => {
   // Функция входа
   const login = async (credentials) => {
     try {
+      console.log('AuthContext: попытка входа с credentials:', credentials);
+      
       dispatch({ type: AuthActionTypes.SET_LOADING, payload: true });
       dispatch({ type: AuthActionTypes.SET_ERROR, payload: null });
 
       const response = await userAPI.login(credentials);
-      const formattedUser = apiUtils.formatUserData(response.user);
+      console.log('AuthContext: ответ от API:', response);
       
-      dispatch({ type: AuthActionTypes.SET_USER, payload: formattedUser });
-      return { success: true, user: formattedUser };
+      if (response.user) {
+        const formattedUser = apiUtils.formatUserData(response.user);
+        console.log('AuthContext: отформатированный пользователь:', formattedUser);
+        
+        dispatch({ type: AuthActionTypes.SET_USER, payload: formattedUser });
+        console.log('AuthContext: пользователь установлен в состояние');
+        
+        return { success: true, user: formattedUser };
+      } else {
+        console.error('AuthContext: неверный формат ответа от сервера');
+        throw new Error('Неверный формат ответа от сервера');
+      }
     } catch (error) {
+      console.error('AuthContext: ошибка входа:', error);
       const errorResult = apiUtils.handleError(error);
       dispatch({ type: AuthActionTypes.SET_ERROR, payload: errorResult.error });
       return errorResult;
@@ -129,12 +163,12 @@ export const AuthProvider = ({ children }) => {
       dispatch({ type: AuthActionTypes.SET_LOADING, payload: true });
       dispatch({ type: AuthActionTypes.SET_ERROR, payload: null });
 
-      const response = await userAPI.register(userData);
+      await userAPI.register(userData);
       
       // После регистрации автоматически входим
       const loginResult = await login({
-        email: userData.email,
-        password: userData.password
+        user_id: userData.user_id,
+        name: userData.name
       });
       
       return loginResult;
@@ -147,8 +181,10 @@ export const AuthProvider = ({ children }) => {
 
   // Функция выхода
   const logout = () => {
+    console.log('AuthContext: выход из учетной записи');
     userAPI.logout();
     dispatch({ type: AuthActionTypes.LOGOUT });
+    console.log('AuthContext: состояние сброшено');
   };
 
   // Функция обновления статистики пользователя
@@ -170,7 +206,11 @@ export const AuthProvider = ({ children }) => {
   const refreshUser = async () => {
     if (state.user && userAPI.isAuthenticated()) {
       try {
-        const freshUserData = await userAPI.getUser(state.user.id);
+        // Используем правильный ID для PostgreSQL
+        const userId = state.user.user_id || state.user.id;
+        console.log('AuthContext: обновляем пользователя с ID:', userId);
+        
+        const freshUserData = await userAPI.getUser(userId);
         const formattedUser = apiUtils.formatUserData(freshUserData);
         dispatch({ type: AuthActionTypes.SET_USER, payload: formattedUser });
         return formattedUser;

@@ -5,7 +5,7 @@ const { Task, UserTaskAttempt, User } = require('../modules');
 // Получение всех заданий
 router.get('/', async (req, res) => {
   try {
-    const { difficulty, subject, limit = 10 } = req.query;
+    const { difficulty, subject, limit = 10, user_id } = req.query;
     
     const where = { is_active: true };
     if (difficulty) where.difficulty = difficulty;
@@ -18,7 +18,35 @@ router.get('/', async (req, res) => {
       attributes: { exclude: ['correct_answer'] } // Не показываем правильный ответ
     });
     
-    res.json(tasks);
+    // Если указан user_id, добавляем информацию о выполнении
+    if (user_id) {
+      const attempts = await UserTaskAttempt.findAll({
+        where: { user_id },
+        attributes: ['task_id', 'is_correct', 'attempt_time']
+      });
+      
+      const attemptsMap = {};
+      attempts.forEach(attempt => {
+        attemptsMap[attempt.task_id] = {
+          is_completed: true,
+          is_correct: attempt.is_correct,
+          attempt_time: attempt.attempt_time
+        };
+      });
+      
+      const tasksWithProgress = tasks.map(task => ({
+        ...task.toJSON(),
+        user_progress: attemptsMap[task.task_id] || {
+          is_completed: false,
+          is_correct: false,
+          attempt_time: null
+        }
+      }));
+      
+      res.json(tasksWithProgress);
+    } else {
+      res.json(tasks);
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -36,6 +64,55 @@ router.get('/:id', async (req, res) => {
     }
     
     res.json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Получение заданий по предмету с прогрессом пользователя
+router.get('/subject/:subject_id', async (req, res) => {
+  try {
+    const { subject_id } = req.params;
+    const { user_id } = req.query;
+    
+    const tasks = await Task.findAll({
+      where: { 
+        subject_id: parseInt(subject_id),
+        is_active: true 
+      },
+      order: [['task_id', 'ASC']],
+      attributes: { exclude: ['correct_answer'] }
+    });
+    
+    // Если указан user_id, добавляем информацию о выполнении
+    if (user_id) {
+      const attempts = await UserTaskAttempt.findAll({
+        where: { user_id },
+        attributes: ['task_id', 'is_correct', 'attempt_time']
+      });
+      
+      const attemptsMap = {};
+      attempts.forEach(attempt => {
+        attemptsMap[attempt.task_id] = {
+          is_completed: true,
+          is_correct: attempt.is_correct,
+          attempt_time: attempt.attempt_time
+        };
+      });
+      
+      const tasksWithProgress = tasks.map(task => ({
+        ...task.toJSON(),
+        user_progress: attemptsMap[task.task_id] || {
+          is_completed: false,
+          is_correct: false,
+          attempt_time: null
+        }
+      }));
+      
+      res.json(tasksWithProgress);
+    } else {
+      res.json(tasks);
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

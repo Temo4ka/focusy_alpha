@@ -100,6 +100,91 @@ body {
   right: 35px;
 }
 
+/* Специальные стили для ProfilePage */
+.profile-page .header {
+  position: absolute;
+  width: 800px;
+  height: 173px;
+  top: 340px;
+  left: 35px;
+  padding: 0;
+}
+
+.profile-page .header-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+}
+
+.profile-page .header-left {
+  flex: 0 0 auto;
+  min-width: 120px;
+  position: relative;
+  top: 23px;
+  left: 0;
+}
+
+.profile-page .header-right {
+  flex: 0 0 auto;
+  min-width: 120px;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  top: 23px;
+  right: 0;
+}
+
+.profile-page .logo-container {
+  position: absolute;
+  width: 562px;
+  height: 173px;
+  top: 0;
+  left: 119px;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-page .logo-img {
+  position: absolute;
+  width: 117px;
+  height: 117px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.profile-page .logo-title {
+  position: absolute;
+  width: 557px;
+  top: 126px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.profile-page .profile-btn {
+  position: relative;
+  width: auto;
+  height: auto;
+  top: auto;
+  left: auto;
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: 80px;
+  height: 36px;
+}
+
 .btn-content {
   display: inline-flex;
   align-items: center;
@@ -647,6 +732,32 @@ body {
   font-size: 20px;
   text-align: center;
   margin-top: 24px;
+}
+
+.taskselect-loading {
+  text-align: center;
+  color: var(--color-text-light);
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 40px 20px;
+}
+
+.taskselect-error {
+  text-align: center;
+  color: #E34B4B;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 40px 20px;
+}
+
+.taskselect-stats {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
 }
 
 .taskselect-back {
@@ -1712,4 +1823,105 @@ body {
   .stats-container {
     flex-direction: column;
   }
+}
+
+/* QuickLogin стили */
+.quick-login-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.quick-login-container h2 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.quick-login-form {
+  margin-bottom: 30px;
+}
+
+.quick-login-form p {
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 16px;
+}
+
+.quick-login-select {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.quick-login-select:focus {
+  border-color: #007bff;
+}
+
+.quick-login-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px;
+}
+
+.quick-login-button:hover {
+  background: #0056b3;
+}
+
+.quick-login-success {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.quick-login-success p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.quick-login-info {
+  text-align: left;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.quick-login-info h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.quick-login-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.quick-login-info li {
+  margin: 8px 0;
+  color: #666;
+}
+
+.quick-login-loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
 }

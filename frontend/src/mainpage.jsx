@@ -10,15 +10,33 @@ import leaderboard from "./assets/leaderboard.png";
 import rectangle188 from "./assets/rectangle188.png";
 import "./styles.css";
 import { useAuth } from "./contexts/AuthContext";
+import QuickLogin from "./QuickLogin.jsx";
 
 export const IphoneProMax = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [activeNav, setActiveNav] = useState('home');
   const navigate = useNavigate();
 
   const userName = user?.name || "Гость";
   const coins = user?.coins ?? 0;
   const isSubscribed = Boolean(user?.subscribe);
+
+  // Если идет загрузка, показываем индикатор
+  if (isLoading) {
+    return (
+      <div className="app-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div className="main-container" style={{ textAlign: 'center' }}>
+          <h1 className="logo-title">FOCUSY</h1>
+          <div style={{ marginTop: '20px' }}>Загрузка...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Если пользователь не авторизован, показываем страницу входа
+  if (!isAuthenticated) {
+    return <QuickLogin />;
+  }
 
   const navigationItems = [
     {
@@ -74,6 +92,11 @@ export const IphoneProMax = () => {
     navigate('/subscribe');
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="app-container">
       <div className="main-container">
@@ -97,6 +120,23 @@ export const IphoneProMax = () => {
                 <img className="points-icon" alt="I" src={i2} />
                 <span className="points-value">{coins}</span>
               </div>
+              
+              {isAuthenticated && (
+                <button 
+                  className="profile-btn" 
+                  onClick={handleLogout}
+                  style={{ 
+                    marginLeft: '15px',
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    minWidth: 'auto'
+                  }}
+                >
+                  <div className="btn-content outlined">
+                    <span className="btn-text">Выход</span>
+                  </div>
+                </button>
+              )}
             </div>
           </div>
         </header>
